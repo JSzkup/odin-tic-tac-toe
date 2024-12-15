@@ -10,16 +10,23 @@
 
     const getBoard = () => board;
 
-    // TODO function to find available spots in the board
-    // TODO players will be an object of name & X/O
-    // TODO check if there isnt a 0(Cell.getValue != 0), if there is place the players token (filter & map)
+    const placeToken = () => {
+        // Checks every spot on the board for its cell value to check if its available for player input
+        const availableCells = board.filter((row) => row.filter((cell) => cell.getValue() === 0).length > 0)
+
+        if (!availableCells) return;
+    }
 
     const printBoard = () => {
-        console.log(board);
+        // Prints the board with the player token values
+        const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
+
+        console.log(boardWithCellValues);
     }
 
     return {
         getBoard,
+        placeToken,
         printBoard
     }
 })();
@@ -27,7 +34,6 @@
 function Cell() {
     let value = 0;
 
-    // TODO needs to work with new player object getPlayerToken
     const addToken = (player) => {
         value = player;
     };
@@ -89,7 +95,6 @@ function gameController(playerOne = createPlayer("Jon", "X"), playerTwo = create
         console.log(`${getActivePlayer().getPlayerName}'s turn.`);
     }
 
-    //  TODO should I pass "column" into this?
     const playRound = () => {
         // TODO print the current players turn to console
         // TODO place X/O in an available space
