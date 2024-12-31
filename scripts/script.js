@@ -1,6 +1,21 @@
+function Cell() {
+    let value = 0;
+
+    const addToken = (token) => {
+        value = token;
+    };
+
+    const getValue = () => value;
+
+    return {
+        addToken,
+        getValue
+    };
+}
+
 // gameboard object
 // *Board for the game - WIll be an IIFE
-(function gameBoard() {
+const gameBoard = (function () {
     // create a 3 x 3 array to be used as a game board
     let board = [
         [Cell(), Cell(), Cell()],
@@ -12,7 +27,7 @@
 
     const placeToken = (row, column, token) => {
         // Checks every spot on the board for its cell value to check if its available for player input
-        const availableCells = board.filter((row) => row.filter((cell) => cell.getValue() === 0).length > 0)
+        const availableCells = board.filter((row) => row.filter((cell) => cell.getValue() === 0).length > 0);
 
         if (!availableCells) return;
 
@@ -33,29 +48,16 @@
     }
 })();
 
-function Cell() {
-    let value = 0;
 
-    const addToken = (token) => {
-        value = token;
-    };
-
-    const getValue = () => value;
-
-    return {
-        addToken,
-        getValue
-    };
-}
 // player object
 // record player score, increase it - player name
-function createPlayer(name, token) {
+function createPlayer(name, UniqueToken) {
     let score = 0;
-    let token = token;
+    let uniqueToken = UniqueToken;
 
     const getPlayerName = () => name;
 
-    const getPlayerToken = () => token;
+    const getPlayerToken = () => uniqueToken;
 
     const getScore = () => score;
     const increaseScore = () => score++;
@@ -72,7 +74,7 @@ function createPlayer(name, token) {
 // game object 
 // *Game rules are defined and played out
 function gameController(playerOne = createPlayer("Jon", "X"), playerTwo = createPlayer("CPU", "O")) {
-    const board = gameBoard();
+    const board = gameBoard.getBoard();
 
     const players = [
         {
@@ -108,7 +110,7 @@ function gameController(playerOne = createPlayer("Jon", "X"), playerTwo = create
     return {
         getActivePlayer,
         getBoard: board.getBoard,
-        // playRound
+        playRound
     }
 
 }
