@@ -64,9 +64,9 @@ function createPlayer(name, UniqueToken) {
 
     return {
         getPlayerName,
+        getPlayerToken,
         getScore,
         increaseScore,
-        getPlayerToken
     }
 }
 
@@ -78,12 +78,12 @@ function gameController(playerOne = createPlayer("Jon", "X"), playerTwo = create
 
     const players = [
         {
-            name: playerOne.getPlayerName,
-            token: playerOne.getPlayerToken
+            name: playerOne.getPlayerName(),
+            token: playerOne.getPlayerToken()
         },
         {
-            name: playerTwo.getPlayerName,
-            token: playerTwo.getPlayerToken
+            name: playerTwo.getPlayerName(),
+            token: playerTwo.getPlayerToken()
         }
     ];
 
@@ -95,22 +95,22 @@ function gameController(playerOne = createPlayer("Jon", "X"), playerTwo = create
     const getActivePlayer = () => activePlayer;
 
     const printNewRound = () => {
-        board.printBoard();
-        console.log(`${getActivePlayer().getPlayerName}'s turn.`);
+        gameBoard.printBoard();
+        console.log(`${getActivePlayer().name}'s turn.`);
     }
 
     const playRound = (row, column) => {
 
-        board.placeToken(row, column, getActivePlayer().getPlayerToken);
+        gameBoard.placeToken(row, column, getActivePlayer().token);
 
         switchPlayerTurn();
         printNewRound();
     }
 
     return {
+        playRound,
         getActivePlayer,
-        getBoard: board.getBoard,
-        playRound
+        getBoard: gameBoard.getBoard,
     }
 
 }
