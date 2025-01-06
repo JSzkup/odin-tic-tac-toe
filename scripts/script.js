@@ -26,12 +26,16 @@ const gameBoard = (function () {
     const getBoard = () => board;
 
     const placeToken = (row, column, token) => {
-        // Checks every spot on the board for its cell value to check if its available for player input
-        const availableCells = board.filter((row) => row.filter((cell) => cell.getValue() === 0).length > 0);
+        // Check if the cell is already occupied
+        if (board[row][column].getValue() !== 0) {
+            console.log("This cell is already occupied. Choose another cell.");
+            // returning false to inducate failure of placement
+            return false;
+        }
 
-        if (!availableCells) return;
-
-        board[row][column].addToken(token)
+        // If the cell is empty, place the token
+        board[row][column].addToken(token);
+        return true;
     }
 
     const printBoard = () => {
@@ -73,7 +77,7 @@ function createPlayer(name, UniqueToken) {
 
 // game object 
 // *Game rules are defined and played out
-function gameController(playerOne = createPlayer("Jon", "X"), playerTwo = createPlayer("CPU", "O")) {
+const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"), playerTwo = createPlayer("CPU", "O")) {
     const board = gameBoard.getBoard();
 
     const players = [
@@ -113,5 +117,4 @@ function gameController(playerOne = createPlayer("Jon", "X"), playerTwo = create
         getBoard: gameBoard.getBoard,
     }
 
-}
-// if a space has already been filled in you cant overwrite
+})();
