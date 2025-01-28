@@ -105,19 +105,25 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
 
     const playRound = (row, column) => {
 
-        gameBoard.placeToken(row, column, getActivePlayer().token);
+        const validPlacement = gameBoard.placeToken(row, column, getActivePlayer().token);
 
         const outcome = checkWinner();
 
         if (outcome === getActivePlayer().token) {
             console.log(`${getActivePlayer().name} wins!`);
-            getActivePlayer().increaseScore();
+            // getActivePlayer().increaseScore();
         } else if (outcome === null) {
             console.log("It's a tie!");
         }
 
-        // TODO dont switch player turn if playRound returns false
-        switchPlayerTurn();
+        // switch players if a token was able to be placed
+        if (validPlacement) {
+            switchPlayerTurn();
+        }
+        else {
+            return;
+        }
+
         printNewRound();
     }
 
