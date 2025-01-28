@@ -107,14 +107,69 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
 
         gameBoard.placeToken(row, column, getActivePlayer().token);
 
+        // TODO check for a winner after each round is played
+        // TODO check winner returns null if no winner, 'X' if player 1 wins, 'O' if player 2 wins
+        checkWinner();
+
+        // TODO dont switch player turn if playRound returns false
         switchPlayerTurn();
         printNewRound();
+    }
+
+    const checkWinner = () => {
+
+        // checks to see if the board has been fully filled with non winning tokens
+        for (let row of board) {
+            for (let cell of row) {
+                //  TODO check for zeroes or for NO zeroes to check for ties
+                if (cell.getValue() === 0) {
+                    return null;
+                }
+            }
+        }
+
+        // checks rows
+        for (let i = 0; i < 3; i++) {
+            const row = board[i];  // gets entire row at index i
+            if (row[0] !== 0 && row.every(cell => cell.getValue() === row[0].getValue())) {
+                return row[0].getValue(); // return the winning symbol
+            }
+        }
+
+        // checks columns
+        for (let i = 0; i < 3; i++) {
+            const column = board.map(row => row[i]);  // creates array of cells in column i
+            if (column[0] !== 0 && column.every(cell => cell.getValue() === column[0].getValue())) {
+                return column[0].getValue();
+            }
+        }
+
+        // checks forward diagonal
+        if (board[0][0].getValue() === board[1][1].getValue() === board[2][2].getValue()) {
+            return board[0][0].getValue();
+        }
+
+        // checks backward diagonal
+        if (board[0][2].getValue() === board[1][1].getValue() === board[2][0].getValue()) {
+            return board[0][2].getValue();
+        }
+
     }
 
     return {
         playRound,
         getActivePlayer,
         getBoard: gameBoard.getBoard,
+        checkWinner,
     }
 
 })();
+
+// necessary for jest testing
+module.exports = {
+    gameBoard,
+    createPlayer,
+    gameLogic
+};
+
+// gameLogic.playRound(0,1) in Chrome console
