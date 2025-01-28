@@ -107,9 +107,14 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
 
         gameBoard.placeToken(row, column, getActivePlayer().token);
 
-        // TODO check for a winner after each round is played
-        // TODO check winner returns null if no winner, 'X' if player 1 wins, 'O' if player 2 wins
-        checkWinner();
+        const outcome = checkWinner();
+
+        if (outcome === getActivePlayer().token) {
+            console.log(`${getActivePlayer().name} wins!`);
+            getActivePlayer().increaseScore();
+        } else if (outcome === null) {
+            console.log("It's a tie!");
+        }
 
         // TODO dont switch player turn if playRound returns false
         switchPlayerTurn();
@@ -118,10 +123,15 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
 
     const checkWinner = () => {
 
+        // if all cells are filled and no winner, return null
+        if (board.every(row => row.every(cell => cell.getValue() !== 0))) {
+            return null;
+        }
+
         // checks rows
         for (let i = 0; i < 3; i++) {
             const row = board[i];  // gets entire row at index i
-            if (row[0] !== 0 && row.every(cell => cell.getValue() === row[0].getValue())) {
+            if (row[0].getValue() !== 0 && row.every(cell => cell.getValue() === row[0].getValue())) {
                 return row[0].getValue(); // return the winning symbol
             }
         }
@@ -129,7 +139,7 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
         // checks columns
         for (let i = 0; i < 3; i++) {
             const column = board.map(row => row[i]);  // creates array of cells in column i
-            if (column[0] !== 0 && column.every(cell => cell.getValue() === column[0].getValue())) {
+            if (column[0].getValue() !== 0 && column.every(cell => cell.getValue() === column[0].getValue())) {
                 return column[0].getValue();
             }
         }
@@ -143,8 +153,6 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
         if (board[0][2].getValue() && board[1][1].getValue() && board[2][0].getValue() && board[0][2].getValue() !== 0) {
             return board[0][2].getValue();
         }
-
-        // TODO check for ties
 
     }
 
