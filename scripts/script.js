@@ -118,16 +118,6 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
 
     const checkWinner = () => {
 
-        // checks to see if the board has been fully filled with non winning tokens
-        for (let row of board) {
-            for (let cell of row) {
-                //  TODO check for zeroes or for NO zeroes to check for ties
-                if (cell.getValue() === 0) {
-                    return null;
-                }
-            }
-        }
-
         // checks rows
         for (let i = 0; i < 3; i++) {
             const row = board[i];  // gets entire row at index i
@@ -145,14 +135,16 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
         }
 
         // checks forward diagonal
-        if (board[0][0].getValue() === board[1][1].getValue() === board[2][2].getValue()) {
+        if (board[0][0].getValue() && board[1][1].getValue() && board[2][2].getValue() && board[0][0].getValue() !== 0) {
             return board[0][0].getValue();
         }
 
         // checks backward diagonal
-        if (board[0][2].getValue() === board[1][1].getValue() === board[2][0].getValue()) {
+        if (board[0][2].getValue() && board[1][1].getValue() && board[2][0].getValue() && board[0][2].getValue() !== 0) {
             return board[0][2].getValue();
         }
+
+        // TODO check for ties
 
     }
 
