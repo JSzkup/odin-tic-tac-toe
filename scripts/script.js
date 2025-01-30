@@ -13,8 +13,7 @@ function Cell() {
     };
 }
 
-// gameboard object
-// *Board for the game - WIll be an IIFE
+// gameboard object as an IIFE
 const gameBoard = (function () {
     // create a 3 x 3 array to be used as a game board
     let board = [
@@ -170,6 +169,57 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
     }
 
 })();
+
+function DOMController() {
+    // renders contents of the gameboard to the DOM
+
+    const gameContainer = document.querySelector('.game-container');
+
+
+    const renderBoard = () => {
+        // clears the game board
+        gameContainer.innerHTML = '';
+
+        const boardElement = document.createElement('div');
+        boardElement.classList.add('game-board');
+
+        // initializes the game board from gameBoard function
+        const board = gameLogic.getBoard();
+
+        // create a 3x3 grid of cells
+        board.forEach((row, rowIndex) => {
+            row.forEach((cell, columnIndex) => {
+                const cellElement = document.createElement('div');
+                cellElement.classList.add('cell');
+
+                // Render blank space if cell value is 0
+                cellElement.textContent = cell.getValue() === 0 ? ' ' : cell.getValue();
+
+                cellElement.addEventListener('click', () => {
+                    gameLogic.playRound(rowIndex, columnIndex);
+                    renderBoard();
+                });
+                boardElement.appendChild(cellElement);
+            });
+        });
+        gameContainer.appendChild(boardElement);
+
+    };
+
+    return {
+        renderBoard,
+    }
+}
+
+// used to immediatley run the DOMController
+const domController = DOMController();
+domController.renderBoard();
+
+// TODO player input logic
+function playerInput() {
+    // allows players to click a space on the board to place their token
+
+}
 
 // necessary for jest testing
 module.exports = {
