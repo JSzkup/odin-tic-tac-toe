@@ -11,13 +11,29 @@
 
 <body>
 
-    <!-- TODO input for users to put in their names -->
+    <div class="message-container"></div>
 
-    <!-- TODO button to start/restart the game -->
+    <div class="play-section">
 
-    <div class="game-container"></div>
+        <div class="player1-container">
+            <!-- TODO this should be added by the DOM and replaced by its input -->
+            <input type="text" placeholder="Player 1 Name" class="player1-name">
+        </div>
 
-    <!-- TODO div for displaying any messages and the winner -->
+        <div class="game-container"></div>
+
+        <div class="player2-container">
+            <input type="text" placeholder="Player 2 Name" class="player2-name">
+
+        </div>
+
+    </div>
+
+    <div class="input-container">
+        <input type="button" value="Start Game" class="start-game">
+        <input type="button" value="Restart Game" class="restart-game">
+    </div>
+
 
     <script src="scripts/script.js"></script>
 </body>
