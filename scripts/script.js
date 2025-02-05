@@ -111,6 +111,10 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
         if (outcome === getActivePlayer().token) {
             console.log(`${getActivePlayer().name} wins!`);
             // getActivePlayer().increaseScore();
+
+            // TODO make the round end the moment a winner is declared
+
+            return;
         } else if (outcome === null) {
             console.log("It's a tie!");
         }
@@ -127,6 +131,8 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
     }
 
     const checkWinner = () => {
+
+        // TODO fix issues where a winner is declared improperly
 
         // if all cells are filled and no winner, return null
         if (board.every(row => row.every(cell => cell.getValue() !== 0))) {
@@ -211,15 +217,9 @@ function DOMController() {
     }
 }
 
-// used to immediatley run the DOMController
+// used to immediately run the DOMController
 const domController = DOMController();
 domController.renderBoard();
-
-// TODO player input logic
-function playerInput() {
-    // allows players to click a space on the board to place their token
-
-}
 
 // necessary for jest testing
 module.exports = {

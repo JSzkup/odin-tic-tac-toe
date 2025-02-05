@@ -109,7 +109,6 @@ describe('Game State', () => {
         console.log('Board reset for new test');
     });
 
-    // TODO why does this test return "X" instead of null?
     test('should detect a tie', () => {
         const moves = [
             [0, 0, 'X'], [0, 1, 'O'], [0, 2, 'X'],
