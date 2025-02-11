@@ -227,5 +227,3 @@ module.exports = {
     createPlayer,
     gameLogic
 };
-
-// gameLogic.playRound(0,1) in Chrome console
