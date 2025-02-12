@@ -28,7 +28,8 @@ const gameBoard = (function () {
         // Check if the cell is already occupied
         if (board[row][column].getValue() !== 0) {
             console.log("This cell is already occupied. Choose another cell.");
-            // returning false to inducate failure of placement
+
+            // placement failed
             return false;
         }
 
@@ -36,6 +37,14 @@ const gameBoard = (function () {
         board[row][column].addToken(token);
         return true;
     }
+
+    const resetBoard = () => {
+        board = [
+            [Cell(), Cell(), Cell()],
+            [Cell(), Cell(), Cell()],
+            [Cell(), Cell(), Cell()]
+        ];
+    };
 
     const printBoard = () => {
         // Prints the board with the player token values
@@ -47,7 +56,8 @@ const gameBoard = (function () {
     return {
         getBoard,
         placeToken,
-        printBoard
+        printBoard,
+        resetBoard,
     }
 })();
 
@@ -77,7 +87,6 @@ function createPlayer(name, UniqueToken) {
 // game object 
 // *Game rules are defined and played out
 const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"), playerTwo = createPlayer("CPU", "O")) {
-    const board = gameBoard.getBoard();
 
     const players = [
         {
@@ -91,18 +100,34 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
     ];
 
     let activePlayer = players[0];
+    let isGameActive = true;
 
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
     const getActivePlayer = () => activePlayer;
 
+    const resetGame = () => {
+        isGameActive = true;
+        activePlayer = players[0];
+        gameBoard.resetBoard();
+    }
+
     const printNewRound = () => {
         gameBoard.printBoard();
         console.log(`${getActivePlayer().name}'s turn.`);
     }
 
+
     const playRound = (row, column) => {
+
+        const board = gameBoard.getBoard();
+
+        // check if the game is over
+        if (!isGameActive) {
+            console.log("Game is over. Please start a new game.");
+            return;
+        }
 
         const validPlacement = gameBoard.placeToken(row, column, getActivePlayer().token);
 
@@ -110,13 +135,12 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
 
         if (outcome === getActivePlayer().token) {
             console.log(`${getActivePlayer().name} wins!`);
-            // getActivePlayer().increaseScore();
-
-            // TODO make the round end the moment a winner is declared
+            isGameActive = false;
 
             return;
         } else if (outcome === null) {
             console.log("It's a tie!");
+            isGameActive = false;
         }
 
         // switch players if a token was able to be placed
@@ -132,7 +156,9 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
 
     const checkWinner = () => {
 
-        // TODO fix issues where a winner is declared improperly
+        const board = gameBoard.getBoard();
+
+        // TODO Any diagonal is considered a win
 
         // if all cells are filled and no winner, return null
         if (board.every(row => row.every(cell => cell.getValue() !== 0))) {
@@ -172,6 +198,7 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
         getActivePlayer,
         getBoard: gameBoard.getBoard,
         checkWinner,
+        resetGame,
     }
 
 })();
@@ -216,6 +243,24 @@ function DOMController() {
         renderBoard,
     }
 }
+
+function gameButtons() {
+    const startButton = document.querySelector('.start-game');
+    const resetButton = document.querySelector('.restart-game');
+
+    startButton.addEventListener('click', () => {
+        // TODO once player name input is added use this to start
+        gameLogic.resetGame();
+        DOMController().renderBoard();
+    });
+
+    resetButton.addEventListener('click', () => {
+        gameLogic.resetGame();
+        DOMController().renderBoard();
+    });
+}
+
+gameButtons();
 
 // used to immediately run the DOMController
 const domController = DOMController();

@@ -19,14 +19,33 @@ body {
     margin-bottom: 50px;
 }
 
+.player1-container,
+.player2-container {
+    /* Add padding and background to make the effect more visible */
+    padding: 20px;
+    background-color: white;
+    /* or any color you prefer */
+
+}
+
 .player1-container {
     grid-column: 1;
-    /* TODO center text inputs */
+    border-right: 2px solid rgba(0, 0, 0, 0.8);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.8);
+    box-shadow:
+        8px 8px 0 -2px rgba(0, 0, 0, 0.8),
+        12px 12px 15px rgba(0, 0, 0, 0.3);
 }
 
 .player2-container {
     grid-column: 3;
+    border-left: 2px solid rgba(0, 0, 0, 0.8);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.8);
+    box-shadow:
+        -8px 8px 0 -2px rgba(0, 0, 0, 0.8),
+        -12px 12px 15px rgba(0, 0, 0, 0.3);
 }
+
 
 .game-board {
     display: grid;
