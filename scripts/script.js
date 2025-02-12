@@ -158,8 +158,6 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
 
         const board = gameBoard.getBoard();
 
-        // TODO Any diagonal is considered a win
-
         // if all cells are filled and no winner, return null
         if (board.every(row => row.every(cell => cell.getValue() !== 0))) {
             return null;
@@ -181,14 +179,16 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
             }
         }
 
-        // checks forward diagonal
-        if (board[0][0].getValue() && board[1][1].getValue() && board[2][2].getValue() && board[0][0].getValue() !== 0) {
-            return board[0][0].getValue();
+        // checks forward diagonal (\)
+        const forwardDiag = [board[0][0].getValue(), board[1][1].getValue(), board[2][2].getValue()];
+        if (forwardDiag[0] !== 0 && forwardDiag.every(value => value === forwardDiag[0])) {
+            return forwardDiag[0];
         }
 
-        // checks backward diagonal
-        if (board[0][2].getValue() && board[1][1].getValue() && board[2][0].getValue() && board[0][2].getValue() !== 0) {
-            return board[0][2].getValue();
+        // checks backward diagonal (/)
+        const backwardDiag = [board[0][2].getValue(), board[1][1].getValue(), board[2][0].getValue()];
+        if (backwardDiag[0] !== 0 && backwardDiag.every(value => value === backwardDiag[0])) {
+            return backwardDiag[0];
         }
 
     }
