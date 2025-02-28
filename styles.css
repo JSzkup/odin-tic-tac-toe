@@ -68,7 +68,6 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 2em;
-    /* cursor: pointer; */
 }
 
 /* Remove right border from cells in last column */
@@ -79,6 +78,13 @@ body {
 /* Remove bottom border from cells in last row */
 .cell:nth-child(n+7) {
     border-bottom: none;
+}
+
+.player-name-display {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: center;
 }
 
 

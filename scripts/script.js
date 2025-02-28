@@ -28,6 +28,7 @@ const gameBoard = (function () {
         // Check if the cell is already occupied
         if (board[row][column].getValue() !== 0) {
             console.log("This cell is already occupied. Choose another cell.");
+            domController.displayMessage("This cell is already occupied. Choose another cell.");
 
             // placement failed
             return false;
@@ -86,7 +87,7 @@ function createPlayer(name, UniqueToken) {
 
 // game object 
 // *Game rules are defined and played out
-const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"), playerTwo = createPlayer("CPU", "O")) {
+const gameLogic = (function gameController(playerOne = createPlayer("defPlayer1", "X"), playerTwo = createPlayer("CPU", "O")) {
 
     const players = [
         {
@@ -101,6 +102,11 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
 
     let activePlayer = players[0];
     let isGameActive = true;
+
+    const updatePlayerNames = (player1Name, player2Name) => {
+        players[0].name = player1Name;
+        players[1].name = player2Name;
+    };
 
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
@@ -126,6 +132,7 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
         // check if the game is over
         if (!isGameActive) {
             console.log("Game is over. Please start a new game.");
+            domController.displayMessage("Game is over. Please start a new game.");
             return;
         }
 
@@ -135,11 +142,13 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
 
         if (outcome === getActivePlayer().token) {
             console.log(`${getActivePlayer().name} wins!`);
+            domController.displayMessage(`${getActivePlayer().name} wins!`);
             isGameActive = false;
 
             return;
         } else if (outcome === null) {
             console.log("It's a tie!");
+            domController.displayMessage("It's a tie!");
             isGameActive = false;
         }
 
@@ -199,6 +208,7 @@ const gameLogic = (function gameController(playerOne = createPlayer("Jon", "X"),
         getBoard: gameBoard.getBoard,
         checkWinner,
         resetGame,
+        updatePlayerNames
     }
 
 })();
@@ -208,6 +218,12 @@ function DOMController() {
 
     const gameContainer = document.querySelector('.game-container');
 
+    const messageContainer = document.querySelector('.message-container');
+
+    // displays messages in the UI
+    const displayMessage = (message) => {
+        messageContainer.textContent = message;
+    };
 
     const renderBoard = () => {
         // clears the game board
@@ -241,26 +257,59 @@ function DOMController() {
 
     return {
         renderBoard,
+        displayMessage,
     }
 }
 
-function gameButtons() {
+function gameInputs() {
     const startButton = document.querySelector('.start-game');
     const resetButton = document.querySelector('.restart-game');
+    let player1Name = '';
+    let player2Name = '';
 
+    // Starts the game with Player names on button click
     startButton.addEventListener('click', () => {
-        // TODO once player name input is added use this to start
+        // Get player names from input fields
+        const player1Input = document.querySelector('.player1-name');
+        const player2Input = document.querySelector('.player2-name');
+
+        player1Name = player1Input.value || 'Player 1'; // Default if empty
+        player2Name = player2Input.value || 'Player 2'; // Default if empty
+
+        gameLogic.updatePlayerNames(player1Name, player2Name);
+
+        // Replace input fields with player names
+        replaceInputWithName('.player1-container', '.player1-name', player1Name);
+        replaceInputWithName('.player2-container', '.player2-name', player2Name);
+
+        // Reset and render the game board
         gameLogic.resetGame();
         DOMController().renderBoard();
     });
 
     resetButton.addEventListener('click', () => {
         gameLogic.resetGame();
+        domController.displayMessage("Game Reset");
         DOMController().renderBoard();
     });
+
+    function replaceInputWithName(containerSelector, inputSelector, playerName) {
+        const container = document.querySelector(containerSelector);
+        const input = document.querySelector(inputSelector);
+
+        // Create a name display element
+        const nameElement = document.createElement('div');
+        nameElement.textContent = playerName;
+        nameElement.classList.add('player-name-display');
+
+        // Replace the input with the name display
+        container.removeChild(input);
+        container.appendChild(nameElement);
+    }
+
 }
 
-gameButtons();
+gameInputs();
 
 // used to immediately run the DOMController
 const domController = DOMController();
