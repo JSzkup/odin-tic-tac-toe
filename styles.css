@@ -33,8 +33,9 @@ body {
     border-right: 2px solid rgba(0, 0, 0, 0.8);
     border-bottom: 2px solid rgba(0, 0, 0, 0.8);
     box-shadow:
-        8px 8px 0 -2px rgba(0, 0, 0, 0.8),
-        12px 12px 15px rgba(0, 0, 0, 0.3);
+        5px 5px 10px rgba(0, 0, 0, 0.3),
+        8px 8px 15px rgba(0, 0, 0, 0.2);
+
 }
 
 .player2-container {
@@ -42,9 +43,11 @@ body {
     border-left: 2px solid rgba(0, 0, 0, 0.8);
     border-bottom: 2px solid rgba(0, 0, 0, 0.8);
     box-shadow:
-        -8px 8px 0 -2px rgba(0, 0, 0, 0.8),
-        -12px 12px 15px rgba(0, 0, 0, 0.3);
+        -5px 5px 10px rgba(0, 0, 0, 0.3),
+        -8px 8px 15px rgba(0, 0, 0, 0.2);
+
 }
+
 
 
 .game-board {
@@ -87,5 +90,9 @@ body {
     text-align: center;
 }
 
-
-/* TODO separate buttons on bottom */
+.input-container>input {
+    margin: 35px;
+    height: 50px;
+    width: 200px;
+    font-size: 1.2em;
+}
